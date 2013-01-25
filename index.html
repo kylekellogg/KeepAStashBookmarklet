@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  
+  <script type="text/javascript">
+    /**
+    * Setup two-way communication.
+    */
+    if ( window.addEventListener ) {
+      window.addEventListener( 'message', messageReceived, false );
+    } else if ( window.attachEvent ) {
+      window.attachEvent( 'message', messageReceived );
+    }
+    
+    function messageReceived( e ) {
+      var obj = JSON.parse( e.data );
+      
+      /**
+      * Post a fake complete message with the url passed to us so we can ensure this example works.
+      */
+      window.parent.postMessage(
+        JSON.stringify(
+          {
+            "state": "complete",
+            "url": obj.url
+          }
+        ),
+        '*'
+      );
+    }
+    
+    /**
+    * Let the parent window (original window) know that this frame has loaded.
+    */
+    window.onload = function onLoad() {
+      window.parent.postMessage(
+        JSON.stringify(
+          {
+            "state": "frameLoaded"
+          }
+        )
+        ,
+        '*'
+      );
+    };
+  </script>
+</head>
+<body>
+  
+  <!--
+    This is the area where you would put your form, which could successfully talk to your backend.
+  -->
+  
+</body>
+</html>
